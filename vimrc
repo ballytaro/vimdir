@@ -21,7 +21,6 @@ Plugin 'terryma/vim-multiple-cursors'
 Plugin 'tpope/vim-surround'
 
 Plugin 'pangloss/vim-javascript'
-Plugin 'three/yajs.vim'
 Plugin 'maksimr/vim-jsbeautify'
 Plugin 'isRuslan/vim-es6'
 Plugin 'mxw/vim-jsx'
@@ -29,6 +28,7 @@ Plugin 'groenewege/vim-less'
 Plugin 'digitaltoad/vim-jade'
 Plugin 'mattn/emmet-vim'
 Plugin 'lepture/vim-velocity'
+Plugin 'tpope/vim-eunuch'
 
 call vundle#end()
 filetype plugin indent on
@@ -76,8 +76,6 @@ let g:jsx_ext_requird = 0
 
 let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_auto_loc_list = 1
-let g:syntastic_check_on_open = 1
-let g:syntastic_check_on_wq = 0
 
 let g:NERDTreeWinSize = 36
 let g:NERDTreeShowHidden = 1
@@ -113,6 +111,18 @@ function! RestoreSession()
     syntax on
 endfunction
 
+function! InitEslint()
+    if filereadable(getcwd() . './node_modules/.bin/eslint')
+        let g:syntastic_javascript_checkers = ['eslint']
+        let g:syntastic_javascript_eslint_exec = './node_modules/.bin/eslint'
+    else
+        let g:syntastic_javascript_checkers = ['eslint'] 
+        let g:syntastic_javascript_eslint_exec = 'eslint'
+    endif
+endfunction
+
+autocmd VimEnter * call InitEslint()
+
 autocmd VimLeave * NERDTreeClose
 autocmd VimLeave * call SaveSession()
 
@@ -120,3 +130,5 @@ autocmd VimEnter * NERDTree
 autocmd VimEnter * wincmd l
 
 colorscheme monokai
+au BufNewFile,BufRead *.vue set filetype=html
+
