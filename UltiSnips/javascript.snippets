@@ -1,0 +1,149 @@
+# for loop
+snippet for
+for (let ${2:i} = 0, l = ${1:arr}.length; $2 < l; $2++) {
+	let ${3:v} = $1[$2];${0:}
+}
+endsnippet
+
+# Reversed for loop
+snippet forr
+for (let ${2:i} = ${1:arr}.length - 1; $2 >= 0; $2--) {
+	let ${3:v} = $1[$2];${0:}
+}
+endsnippet
+
+# For in loop
+snippet fori
+for (let ${1:prop} in ${2:object}) {
+	${0:$2[$1]}
+}
+endsnippet
+
+snippet fi "for prop in obj using hasOwnProperty"
+for (let ${1:prop} in ${2:obj}){
+	if ($2.hasOwnProperty($1)) {
+		${VISUAL}$0
+	}
+}
+endsnippet
+
+snippet cf "Class Method"
+${1:method}(${2:args}) {
+  ${VISUAL}$0
+}
+endsnippet
+
+snippet vf "Function assigned to var"
+${1:const }${2:function_name} = (${3}) => {
+  ${VISUAL}$0
+};
+endsnippet
+
+snippet ofs "object method string"
+'${1:${2:#thing}:${3:click}}': function(element) {
+  ${VISUAL}$0
+}${10:,}
+endsnippet
+
+snippet of "Object Method"
+${1:method_name}: function(${3:attribute}) {
+  ${VISUAL}$0
+}${10:,}
+endsnippet
+
+snippet timeout "setTimeout function"
+setTimeout(() => {
+  ${VISUAL}$0
+}${2:.bind(${3:this})}, ${1:10});
+endsnippet
+
+snippet map "Array.prototype.map"
+${1:arr}.map((${2}) => {
+  ${0}
+});
+endsnippet
+
+snippet foreach "Array.prototype.forEach"
+${1:arr}.forEach((${2}) => {
+  ${0}
+});
+endsnippet
+
+snippet filter "Array.prototype.filter"
+${1}.filter((${2}) => {
+  ${0}
+});
+endsnippet
+
+snippet cls "Class"
+class ${1} {
+  constructor(${2}) {
+    $0
+  }
+}
+endsnippet
+
+snippet xpd "es6 export default"
+export default $0;
+endsnippet
+
+snippet promise "Promise"
+new Promise((resolve, reject) => {
+  $0
+});
+endsnippet
+
+snippet irm "Import react alias from mui"
+import React from 'mui/reactjs/react';
+import ReactDOM from 'mui/reactjs/react-dom';
+endsnippet
+
+snippet rcc
+class ${1:ClassName} extends React.PureComponent {
+	render() {
+		return (
+			${0:<div />}
+		);
+	}
+}
+endsnippet
+
+snippet ercc
+export default class ${1:ClassName} extends React.PureComponent {
+	render() {
+		return (
+			${0:<div />}
+		);
+	}
+}
+endsnippet
+
+snippet tst
+this.state = {
+  $0: $1
+}
+endsnippet
+
+snippet mtop "Mtop"
+Mtop.request({
+  api: '${1}',
+  v: '1.0',
+  ecode: 0,
+  data: {
+    $2
+  }
+}, res => {
+  $3
+}, err => {
+  $0
+});
+endsnippet
+
+snippet ip "import"
+import $1 from '$0';
+endsnippet
+
+snippet bind "method binding"
+this.$0 = this.$0.bind(this);
+endsnippet
+

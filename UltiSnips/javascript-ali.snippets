@@ -1,0 +1,14 @@
+snippet mtop "Mtop"
+Mtop.request({
+  api: '${1:api}',
+  v: '1.0',
+  ecode: 0,
+  data: {
+    $2
+  }
+}, res => {
+  $3
+}, err => {
+  $4
+});
+endsnippet
