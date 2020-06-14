@@ -1,3 +1,4 @@
 /bundle
 .session.vim
 .netrwhist
+.tags*

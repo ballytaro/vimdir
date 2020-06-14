@@ -11,6 +11,10 @@ Plugin 'scrooloose/syntastic'
 Plugin 'kien/ctrlp.vim'
 " 状态栏
 Plugin 'Lokaltog/powerline', {'rtp': 'powerline/bindings/vim/'}
+" Plugin 'vim-airline/vim-airline'
+" Plugin 'vim-airline/vim-airline-themes'
+" Buffer line
+Plugin 'bling/vim-bufferline'
 " 目录树
 Plugin 'scrooloose/nerdtree'
 Plugin 'jistr/vim-nerdtree-tabs'
@@ -21,9 +25,13 @@ Plugin 'scrooloose/nerdcommenter'
 Plugin 'Valloric/YouCompleteMe'
 " 垂直对齐
 Plugin 'godlygeek/tabular'
+" 缩进线
+Plugin 'Yggdroot/indentLine'
 "Plugin 'vim-scripts/taglist.vim'
 " Tag浏览
 Plugin 'majutsushi/tagbar'
+" Auto ctags
+Plugin 'ludovicchabant/vim-gutentags'
 " Markdown
 Plugin 'plasticboy/vim-markdown'
 "Plugin 'Shougo/neocomplcache.vim'
@@ -55,7 +63,7 @@ Plugin 'tomtom/tlib_vim'
 "Plugin 'garbas/vim-snipmate'
 "Plugin 'fholgado/minibufexpl.vim'
 " 查找
-Plugin 'vim-scripts/FuzzyFinder'
+" Plugin 'vim-scripts/FuzzyFinder'
 " snippets
 Plugin 'SirVer/ultisnips'
 Plugin 'honza/vim-snippets'
@@ -134,17 +142,22 @@ set statusline+=%{SyntasticStatuslineFlag()}
 set statusline+=%*)}
 set previewheight=20
 set wildchar=<Tab> wildcharm=<C-z> wildmenu wildmode=full
-set tags=tags
 set wildignore=node_modules,build,demo,mui,.git,track,*.vim,*.log,tags
+set tags+=.tags;
 
 " 使用Gdiff时默认垂直划分窗口
 set diffopt+=vertical
 
 let Tlist_Ctags_Cmd='/usr/local/bin/ctags'
 
-let g:auto_save = 1
-let g:auto_save_in_insert_mode = 0
-let g:auto_save_no_updatetime = 1
+"let g:auto_save = 1
+"let g:auto_save_in_insert_mode = 0
+"let g:auto_save_no_updatetime = 1
+
+" Buffer line
+let g:bufferline_echo = 0
+let g:bufferline_active_buffer_left = '['
+let g:bufferline_active_buffer_right = ']'
 
 " YCM
 let g:ycm_complete_in_comments = 1 
@@ -155,6 +168,15 @@ let g:vim_markdown_folding_disabled = 1
 let g:javascript_enable_domhtmlcss = 1
 let g:jsx_ext_requird = 0
 
+" YCM Python completion
+let g:ycm_python_interpreter_path = '/usr/bin/python3.7'
+let g:ycm_python_sys_path = []
+let g:ycm_extra_conf_vim_data = [
+  \  'g:ycm_python_interpreter_path',
+  \  'g:ycm_python_sys_path'
+  \]
+let g:ycm_global_ycm_extra_conf = '~/.global_extra_conf.py'
+
 " syntastic
 let g:syntastic_always_populate_loc_list = 0
 let g:syntastic_auto_loc_list = 1
@@ -163,7 +185,7 @@ let g:syntastic_check_on_wq = 0
 let g:syntastic_javascript_checkers = ['eslint']
 let g:syntastic_html_checkers = ['eslint']
 
-let g:NERDTreeWinSize = 36
+let g:NERDTreeWinSize = 60
 let g:NERDTreeShowHidden = 1
 "let g:typescript_indent_disable = 1
 
@@ -183,6 +205,25 @@ let g:UltiSnipsEditSplit="vertical"
 "
 "let g:miniBufExplMapCTabSwitchBufs = 1
 
+"let g:gutentags_trace  = 1
+" gutentags搜索工程目录的标志，碰到这些文件/目录名就停止向上一级目录递归 "
+let g:gutentags_project_root = ['.root', '.svn', '.git', '.project']
+" 所生成的数据文件的名称 "
+let g:gutentags_ctags_tagfile = '.tags'
+" 将自动生成的 tags 文件全部放入 ~/.cache/tags 目录中，避免污染工程目录 "
+let s:vim_tags = expand('~/.cache/tags')
+let g:gutentags_cache_dir = s:vim_tags
+" 检测 ~/.cache/tags 不存在就新建 "
+if !isdirectory(s:vim_tags)
+   silent! call mkdir(s:vim_tags, 'p')
+endif
+" 配置 ctags 的参数 "
+let g:gutentags_ctags_extra_args = ['--fields=+niazS', '--extra=+q']
+"let g:gutentags_ctags_extra_args += ['--c++-kinds=+pxI']
+"let g:gutentags_ctags_extra_args += ['--c-kinds=+px']
+"let g:gutentags_ctags_extra_args += ['--python-kinds=+i']
+let g:gutentags_ctags_exclude = ['dist']
+
 imap <F6> <C-x><C-o>  
 
 "let g:delimitMate_expand_cr = 1
@@ -200,6 +241,8 @@ vnoremap < <gv
 vnoremap > >gv
 
 " map <F1> :execute "Ack /" . expand("<cword>") <Bar> cw<CR>
+
+nnoremap <buffer> <F1> :exec '!python' shellescape(@%, 1)<cr>
 
 nnoremap <F2> :set number! number?<CR>
 " F3 显示可打印字符开关
@@ -262,7 +305,7 @@ autocmd VimLeave * NERDTreeClose
 autocmd VimLeave * call SaveSession()
 
 autocmd VimEnter * wincmd l
-autocmd VimEnter * NERDTree
+"autocmd VimEnter * NERDTree
 "autocmd VimEnter * TagbarToggle
 
 colorscheme monokai

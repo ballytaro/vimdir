@@ -99,7 +99,7 @@ import ReactDOM from 'mui/reactjs/react-dom';
 endsnippet
 
 snippet rcc
-class ${1:ClassName} extends React.PureComponent {
+class ${1:ClassName} extends React.Component {
 	render() {
 		return (
 			${0:<div />}
@@ -122,21 +122,6 @@ snippet tst
 this.state = {
   $0: $1
 }
-endsnippet
-
-snippet mtop "Mtop"
-Mtop.request({
-  api: '${1}',
-  v: '1.0',
-  ecode: 0,
-  data: {
-    $2
-  }
-}, res => {
-  $3
-}, err => {
-  $0
-});
 endsnippet
 
 snippet ip "import"
