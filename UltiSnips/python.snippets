@@ -1,3 +1,6 @@
+snippet f "String format" b
+f'${0}'
+endsnippet
 snippet dt "Dictionary variable"
 ${1} = {
 	${0}
@@ -6,4 +9,33 @@ endsnippet
 
 snippet dtp "Dictionary property"
 '${1}' : ${0},
+endsnippet
+
+snippet cr "Copyright"
+"""
+    Copyright (C) 2020 by Ccob.
+"""
+endsnippet
+
+snippet header "File header snippet"
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+    Copyright (C) 2020 by Ccob.
+"""
+endsnippet
+
+snippet entry "Entry file snippet"
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+    Copyright (C) 2020 by Ccob.
+"""
+import sys
+
+def main() -> int:
+    return 0
+
+if __name__ == "__main__":
+    sys.exit(main())
 endsnippet

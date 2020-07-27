@@ -185,7 +185,7 @@ let g:syntastic_check_on_wq = 0
 let g:syntastic_javascript_checkers = ['eslint']
 let g:syntastic_html_checkers = ['eslint']
 
-let g:NERDTreeWinSize = 60
+let g:NERDTreeWinSize = 36
 let g:NERDTreeShowHidden = 1
 "let g:typescript_indent_disable = 1
 
@@ -291,26 +291,26 @@ function! RestoreSession()
     syntax on
 endfunction
 
-function! InitEslint()
-    if filereadable(getcwd() . './node_modules/.bin/eslint')
-        let g:syntastic_javascript_eslint_exec = './node_modules/.bin/eslint'
-    else
-        let g:syntastic_javascript_eslint_exec = 'eslint'
-    endif
-endfunction
+"function! InitEslint()
+    "if filereadable(getcwd() . './node_modules/.bin/eslint')
+        "let g:syntastic_javascript_eslint_exec = './node_modules/.bin/eslint'
+    "else
+        "let g:syntastic_javascript_eslint_exec = 'eslint'
+    "endif
+"endfunction
 
-autocmd VimEnter * call InitEslint()
+"autocmd VimEnter * call InitEslint()
 
 autocmd VimLeave * NERDTreeClose
 autocmd VimLeave * call SaveSession()
 
-autocmd VimEnter * wincmd l
+"autocmd VimEnter * wincmd l
 "autocmd VimEnter * NERDTree
 "autocmd VimEnter * TagbarToggle
 
 colorscheme monokai
-au BufNewFile,BufRead *.vue set filetype=html
-au BufNewFile,BufRead *.jsx set filetype=js
+"au BufNewFile,BufRead *.vue set filetype=html
+"au BufNewFile,BufRead *.jsx set filetype=js
 "au BufNewFile,BufRead *.tsx set filetype=js
 
 " source helloworld.vim
