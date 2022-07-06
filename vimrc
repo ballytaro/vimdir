@@ -6,7 +6,7 @@ call vundle#begin()
 
 Plugin 'VundleVim/Vundle.vim'
 " 语法检测
-Plugin 'scrooloose/syntastic'
+Plugin 'vim-syntastic/syntastic'
 " 文件搜索
 Plugin 'kien/ctrlp.vim'
 " 状态栏
@@ -58,6 +58,7 @@ Plugin 'mhinz/vim-grepper'
 Plugin 'AndrewRadev/linediff.vim'
 "Plugin 'MarcWeber/vim-addon-mw-utils'
 Plugin 'tomtom/tlib_vim'
+Plugin 'tomlion/vim-solidity'
 " 自动保存
 "Plugin 'vim-scripts/vim-auto-save'
 "Plugin 'garbas/vim-snipmate'
@@ -70,6 +71,11 @@ Plugin 'honza/vim-snippets'
 
 "Plugin 'thiderman/nginx-vim-syntax'
 "Plugin 'jiangmiao/auto-pairs'
+
+" For pyhton & cython
+" Plugin 'lambdalisue/vim-cython-syntax'
+Plugin 'Vimjas/vim-python-pep8-indent'
+Plugin 'anntzer/vim-cython'
 
 Plugin 'Chiel92/vim-autoformat'
 Plugin 'mileszs/ack.vim'
@@ -85,30 +91,33 @@ Plugin 'hail2u/vim-css3-syntax'
 Plugin 'ap/vim-css-color'
 "Plugin 'othree/yajs.vim'
 Plugin 'maksimr/vim-jsbeautify'
-Plugin 'groenewege/vim-less' 
-Plugin 'digitaltoad/vim-jade'
+"Plugin 'groenewege/vim-less' 
+"Plugin 'digitaltoad/vim-jade'
 Plugin 'mattn/emmet-vim'
 Plugin 'lepture/vim-velocity'
 Plugin 'tpope/vim-eunuch'
-Plugin 'yuezk/weex.vim'
+"Plugin 'yuezk/weex.vim'
 Plugin 'leafgarland/typescript-vim'
 
 " For Golang
 Plugin 'fatih/vim-go'
-Bundle 'Blackrush/vim-gocode'
+Plugin 'Blackrush/vim-gocode'
 Plugin 'nsf/gocode', {'rtp': 'vim/'}
 
 call vundle#end()
 filetype plugin indent on
+syntax on
 
 set showcmd
 set showmode
 set autoread
-set cindent
+"set cindent
 set smartindent
+set smarttab
 set autoindent
 set expandtab
 set tabstop=4
+set softtabstop=4
 set shiftwidth=4
 set clipboard=unnamed
 set incsearch
@@ -121,13 +130,14 @@ set cursorline
 set nowrap
 set ignorecase
 
+set backspace=indent,eol,start
+
 set foldmethod=indent
-set foldnestmax=8
+set foldnestmax=4
 set foldlevelstart=99
 
 set number
 set relativenumber
-syntax on
 set backspace=2
 set fencs=utf-8,ucs-bom,shift-jis,gb18030,gbk,gb2312,cp936
 set termencoding=utf-8
@@ -147,6 +157,7 @@ set tags+=.tags;
 
 " 使用Gdiff时默认垂直划分窗口
 set diffopt+=vertical
+set completeopt=menu,menuone
 
 let Tlist_Ctags_Cmd='/usr/local/bin/ctags'
 
@@ -163,13 +174,18 @@ let g:bufferline_active_buffer_right = ']'
 let g:ycm_complete_in_comments = 1 
 let g:ycm_complete_in_strings = 1
 let g:ycm_collect_identifiers_from_comments_and_strings = 1
+let g:ycm_add_preview_to_completeopt = 0
+let g:ycm_show_diagnostics_ui = 0
 
 let g:vim_markdown_folding_disabled = 1
 let g:javascript_enable_domhtmlcss = 1
 let g:jsx_ext_requird = 0
+"let g:typescript_indent_disable = 1
+
+"setlocal indentkeys+=0.
 
 " YCM Python completion
-let g:ycm_python_interpreter_path = '/usr/bin/python3.7'
+let g:ycm_python_interpreter_path = '/usr/bin/python3'
 let g:ycm_python_sys_path = []
 let g:ycm_extra_conf_vim_data = [
   \  'g:ycm_python_interpreter_path',
@@ -180,14 +196,14 @@ let g:ycm_global_ycm_extra_conf = '~/.global_extra_conf.py'
 " syntastic
 let g:syntastic_always_populate_loc_list = 0
 let g:syntastic_auto_loc_list = 1
-let g:syntastic_check_on_open = 0
-let g:syntastic_check_on_wq = 0
+let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_wq = 1
 let g:syntastic_javascript_checkers = ['eslint']
 let g:syntastic_html_checkers = ['eslint']
+let g:syntastic_javascript_eslint_exec = '$(npm bin)/eslint'
 
-let g:NERDTreeWinSize = 36
+let g:NERDTreeWinSize = 45
 let g:NERDTreeShowHidden = 1
-"let g:typescript_indent_disable = 1
 
 " 全局搜文件时忽略的目录和文件
 let g:ctrlp_custom_ignore = {
@@ -242,7 +258,9 @@ vnoremap > >gv
 
 " map <F1> :execute "Ack /" . expand("<cword>") <Bar> cw<CR>
 
-nnoremap <buffer> <F1> :exec '!python' shellescape(@%, 1)<cr>
+"nnoremap <buffer> <F1> :exec '!python' shellescape(@%, 1)<cr>
+autocmd FileType python map <buffer> <F1> :w<CR>:exec '!python3' shellescape(@%, 1)<CR>
+autocmd FileType python imap <buffer> <F1> <esc>:w<CR>:exec '!python3' shellescape(@%, 1)<CR>
 
 nnoremap <F2> :set number! number?<CR>
 " F3 显示可打印字符开关
@@ -273,42 +291,37 @@ function! XTermPasteBegin()
 endfunction
 inoremap <special> <expr> <Esc>[200~ XTermPasteBegin()
 
-function! SaveSession()
-    execute 'mksession! ' . getcwd() . '/.session.vim'
-endfunction
-
-function! RestoreSession()
-    if filereadable(getcwd() . '/.session.vim')
-        execute 'so ' . getcwd() . '/.session.vim'
-        if bufexists(1)
-            for l in range(1, bufnr('$'))
-                if bufwinnr(l) == -1
-                    exec 'sbuffer ' . l
-                endif
-            endfor
-        endif
-    endif
-    syntax on
-endfunction
-
-"function! InitEslint()
-    "if filereadable(getcwd() . './node_modules/.bin/eslint')
-        "let g:syntastic_javascript_eslint_exec = './node_modules/.bin/eslint'
-    "else
-        "let g:syntastic_javascript_eslint_exec = 'eslint'
-    "endif
-"endfunction
-
-"autocmd VimEnter * call InitEslint()
+" function! SaveSession()
+"     execute 'mksession! ' . getcwd() . '/.session.vim'
+" endfunction
+" 
+" function! RestoreSession()
+"     if filereadable(getcwd() . '/.session.vim')
+"         execute 'so ' . getcwd() . '/.session.vim'
+"         if bufexists(1)
+"             for l in range(1, bufnr('$'))
+"                 if bufwinnr(l) == -1
+"                     exec 'sbuffer ' . l
+"                 endif
+"             endfor
+"         endif
+"     endif
+"     syntax on
+" endfunction
 
 autocmd VimLeave * NERDTreeClose
-autocmd VimLeave * call SaveSession()
+"autocmd VimLeave * call SaveSession()
+autocmd BufWinEnter * silent NERDTreeMirror
 
 "autocmd VimEnter * wincmd l
 "autocmd VimEnter * NERDTree
 "autocmd VimEnter * TagbarToggle
 
-colorscheme monokai
+colorscheme solarized
+set background=dark
+"colorscheme monokai
+"let g:molokai_original = 1
+"colorscheme molokai
 "au BufNewFile,BufRead *.vue set filetype=html
 "au BufNewFile,BufRead *.jsx set filetype=js
 "au BufNewFile,BufRead *.tsx set filetype=js
