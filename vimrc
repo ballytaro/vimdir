@@ -69,6 +69,9 @@ Plugin 'tomlion/vim-solidity'
 Plugin 'SirVer/ultisnips'
 Plugin 'honza/vim-snippets'
 
+"Plugin 'yuttie/hydrangea-vim'
+"Plugin 'yuttie/inkstained-vim'
+
 "Plugin 'thiderman/nginx-vim-syntax'
 "Plugin 'jiangmiao/auto-pairs'
 
@@ -104,6 +107,12 @@ Plugin 'fatih/vim-go'
 Plugin 'Blackrush/vim-gocode'
 Plugin 'nsf/gocode', {'rtp': 'vim/'}
 
+" color scheme
+Plugin 'morhetz/gruvbox'
+Plugin 'rakr/vim-one'
+Plugin 'kaicataldo/material.vim', { 'branch': 'main' }
+Plugin 'srcery-colors/srcery-vim'
+
 call vundle#end()
 filetype plugin indent on
 syntax on
@@ -125,8 +134,8 @@ set hlsearch
 set noswapfile
 set nobackup
 set nowb
-set cursorcolumn
-set cursorline
+"set cursorcolumn
+"set cursorline
 set nowrap
 set ignorecase
 
@@ -174,8 +183,8 @@ let g:bufferline_active_buffer_right = ']'
 let g:ycm_complete_in_comments = 1 
 let g:ycm_complete_in_strings = 1
 let g:ycm_collect_identifiers_from_comments_and_strings = 1
-let g:ycm_add_preview_to_completeopt = 0
-let g:ycm_show_diagnostics_ui = 0
+"let g:ycm_add_preview_to_completeopt = 0
+"let g:ycm_show_diagnostics_ui = 0
 
 let g:vim_markdown_folding_disabled = 1
 let g:javascript_enable_domhtmlcss = 1
@@ -201,6 +210,8 @@ let g:syntastic_check_on_wq = 1
 let g:syntastic_javascript_checkers = ['eslint']
 let g:syntastic_html_checkers = ['eslint']
 let g:syntastic_javascript_eslint_exec = '$(npm bin)/eslint'
+"let g:syntastic_python_checkers = ['flake8']
+"let g:syntastic_python_flake8_config_file='.flake8'
 
 let g:NERDTreeWinSize = 45
 let g:NERDTreeShowHidden = 1
@@ -309,7 +320,7 @@ inoremap <special> <expr> <Esc>[200~ XTermPasteBegin()
 "     syntax on
 " endfunction
 
-autocmd VimLeave * NERDTreeClose
+"autocmd VimLeave * NERDTreeClose
 "autocmd VimLeave * call SaveSession()
 autocmd BufWinEnter * silent NERDTreeMirror
 
@@ -317,14 +328,36 @@ autocmd BufWinEnter * silent NERDTreeMirror
 "autocmd VimEnter * NERDTree
 "autocmd VimEnter * TagbarToggle
 
-colorscheme solarized
-set background=dark
-"colorscheme monokai
-"let g:molokai_original = 1
-"colorscheme molokai
 "au BufNewFile,BufRead *.vue set filetype=html
 "au BufNewFile,BufRead *.jsx set filetype=js
 "au BufNewFile,BufRead *.tsx set filetype=js
 
-" source helloworld.vim
+" For color scheme
+"let g:lightline = {
+      "\ 'colorscheme': 'hydrangea',
+      "\ 'component': {
+      "\   'readonly': '%{&readonly?"":""}',
+      "\ },
+      "\ 'separator':    { 'left': '', 'right': '' },
+      "\ 'subseparator': { 'left': '', 'right': '' },
+      "\ }
+"colorscheme default
+"colorscheme ron
+"colorscheme monokai
+"let g:molokai_original = 1
+"colorscheme molokai
+"colorscheme desert
+"colorscheme gruvbox
+"colorscheme solarized
+"colorscheme one
+"colorscheme material
+colorscheme srcery
+"set background=dark
+"hi TabLine ctermfg=Blue ctermbg=Yellow guifg=Blue guibg=Yellow
+"hi TabLineSel ctermfg=Red ctermbg=Yellow guifg=Red guibg=Yellow
+"hi TabLineFill ctermfg=LightGreen ctermbg=DarkGreen guifg=LightGreen guibg=DarkGreen
 
+"set termguicolors
+"set -g default-terminal "screen-256color"
+
+autocmd BufRead,BufNewFile *.conf setf dosini
