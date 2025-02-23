@@ -7,6 +7,8 @@ call vundle#begin()
 Plugin 'VundleVim/Vundle.vim'
 " 语法检测
 Plugin 'vim-syntastic/syntastic'
+" Manage workspace
+"Plugin 'vim-ctrlspace/vim-ctrlspace'
 " 文件搜索
 Plugin 'kien/ctrlp.vim'
 " 状态栏
@@ -22,7 +24,7 @@ Plugin 'Xuyuanp/nerdtree-git-plugin'
 " 注释
 Plugin 'scrooloose/nerdcommenter'
 " 自动补全
-Plugin 'Valloric/YouCompleteMe'
+"Plugin 'Valloric/YouCompleteMe'
 " 垂直对齐
 Plugin 'godlygeek/tabular'
 " 缩进线
@@ -112,11 +114,13 @@ Plugin 'morhetz/gruvbox'
 Plugin 'rakr/vim-one'
 Plugin 'kaicataldo/material.vim', { 'branch': 'main' }
 Plugin 'srcery-colors/srcery-vim'
+Plugin 'github/copilot.vim'
 
 call vundle#end()
 filetype plugin indent on
 syntax on
 
+"set hidden
 set showcmd
 set showmode
 set autoread
@@ -164,6 +168,10 @@ set wildchar=<Tab> wildcharm=<C-z> wildmenu wildmode=full
 set wildignore=node_modules,build,demo,mui,.git,track,*.vim,*.log,tags
 set tags+=.tags;
 
+"let g:CtrlSpaceLoadLastWorkspaceOnStart = 0
+"let g:CtrlSpaceSaveWorkspaceOnSwitch = 0
+"let g:CtrlSpaceSaveWorkspaceOnExit = 1
+
 " 使用Gdiff时默认垂直划分窗口
 set diffopt+=vertical
 set completeopt=menu,menuone
@@ -184,7 +192,7 @@ let g:ycm_complete_in_comments = 1
 let g:ycm_complete_in_strings = 1
 let g:ycm_collect_identifiers_from_comments_and_strings = 1
 "let g:ycm_add_preview_to_completeopt = 0
-"let g:ycm_show_diagnostics_ui = 0
+let g:ycm_show_diagnostics_ui = 0
 
 let g:vim_markdown_folding_disabled = 1
 let g:javascript_enable_domhtmlcss = 1
